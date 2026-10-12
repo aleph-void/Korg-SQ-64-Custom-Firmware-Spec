@@ -28,10 +28,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
-    expected = render(json.loads((ROOT / 'sq64_spec/requirements.json').read_text()))
+    expected = render(json.loads((ROOT / 'sq64_spec/requirements.json').read_text(encoding='utf-8')))
     target = ROOT / 'docs/requirements.md'
     if args.check:
-        if target.read_text() != expected:
+        if target.read_text(encoding='utf-8') != expected:
             raise SystemExit('Requirement documentation is stale; run python tools/render_requirements.py')
     else:
         target.write_text(expected, encoding='utf-8')
