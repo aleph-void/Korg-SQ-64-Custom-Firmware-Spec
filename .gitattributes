@@ -1,0 +1,4 @@
+# Byte-stable checkouts on every platform: spec files are hashed raw
+# (modelContractSha256 pins sq64_spec/board.json), so CRLF conversion
+# on Windows runners would change their digests.
+* text=auto eol=lf
