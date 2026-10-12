@@ -1,0 +1,453 @@
+{
+  "format": "sq64-watch-rules",
+  "version": 1,
+  "vocabularyVersion": 1,
+  "specVersion": "0.4.0",
+  "modelContractSha256": "79ad2f5d1c96bd290f38b1c63c53abb03b73e7ee6993c51c85e05b30bb2757e7",
+  "addressSpaces": {
+    "cpu": 4294967296,
+    "spi-flash": 16777216
+  },
+  "requiredCapabilities": {
+    "eventKinds": [
+      "initial-state",
+      "instruction-boundary",
+      "memory-write",
+      "register-transition",
+      "spi-command",
+      "spi-mutation",
+      "dma-transfer"
+    ],
+    "sources": [
+      "cpu",
+      "dma",
+      "peripheral",
+      "model"
+    ],
+    "modes": [
+      "run",
+      "step",
+      "replay",
+      "fast"
+    ],
+    "guarantees": [
+      "before-first-instruction",
+      "pre-side-effect",
+      "locked-attempts",
+      "all-cpu-aliases",
+      "unmapped-protected-writes",
+      "partial-writes",
+      "side-effect-free-state",
+      "all-dma-transitions",
+      "all-peripheral-writers",
+      "interrupt-paths",
+      "ordered-events",
+      "terminal-session",
+      "stop-midi",
+      "final-report"
+    ]
+  },
+  "normalization": {
+    "byteOrder": "little",
+    "stateRegisters": [
+      1073888272
+    ],
+    "dma": {
+      "controllers": [
+        1073897472,
+        1073898496
+      ],
+      "streamOffset": 16,
+      "streamStride": 24,
+      "streams": 8,
+      "registers": {
+        "control": 0,
+        "count": 4,
+        "peripheral": 8,
+        "primary": 12,
+        "secondary": 16
+      },
+      "enabledMask": 1,
+      "countMask": 65535,
+      "minimumCount": 1,
+      "direction": {
+        "shift": 6,
+        "bits": 2
+      },
+      "peripheralDirections": [
+        1
+      ],
+      "peripheralWidth": {
+        "shift": 11,
+        "bits": 2
+      },
+      "memoryWidth": {
+        "shift": 13,
+        "bits": 2
+      },
+      "widths": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "peripheralIncrementMask": 512,
+      "memoryIncrementMask": 1024,
+      "alternateMask": 262144
+    }
+  },
+  "rules": [
+    {
+      "id": "CRITICAL-001",
+      "description": "Reject writes to both conservative internal-flash windows, erase-mode bits written in their actual byte lanes, and armed erase state. DMA destinations at the erase-control register are unsafe without needing transfer values.",
+      "requirements": [
+        "RECOVERY-001",
+        "RECOVERY-002"
+      ],
+      "classification": "conservative-emulator-policy",
+      "mandatory": true,
+      "applicability": {
+        "phases": [
+          "boot",
+          "application",
+          "interrupt"
+        ],
+        "modes": [
+          "run",
+          "step",
+          "replay",
+          "fast"
+        ]
+      },
+      "requiredObservations": [
+        "initial-state",
+        "instruction-boundary",
+        "memory-write",
+        "register-transition",
+        "dma-transfer"
+      ],
+      "predicate": {
+        "op": "any",
+        "args": [
+          {
+            "op": "all",
+            "args": [
+              {
+                "op": "in",
+                "field": "kind",
+                "values": [
+                  "memory-write",
+                  "dma-span"
+                ]
+              },
+              {
+                "op": "overlap",
+                "space": "cpu",
+                "ranges": [
+                  [
+                    2097152,
+                    3145728
+                  ],
+                  [
+                    134217728,
+                    136314880
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "op": "all",
+            "args": [
+              {
+                "op": "in",
+                "field": "kind",
+                "values": [
+                  "memory-write",
+                  "dma-span"
+                ]
+              },
+              {
+                "op": "write-bits",
+                "address": 1073888272,
+                "width": 4,
+                "mask": 6,
+                "unknown": "match"
+              }
+            ]
+          },
+          {
+            "op": "all",
+            "args": [
+              {
+                "op": "in",
+                "field": "kind",
+                "values": [
+                  "register-state"
+                ]
+              },
+              {
+                "op": "eq",
+                "field": "address",
+                "value": 1073888272
+              },
+              {
+                "op": "bits-any",
+                "field": "number",
+                "mask": 6
+              }
+            ]
+          }
+        ]
+      },
+      "action": "terminate-session",
+      "warning": "Your custom firmware probably will brick your device. Do not flash it.",
+      "legacy": {
+        "severity": "critical",
+        "unsafeWhen": "pass",
+        "status": "pass"
+      },
+      "title": "Internal recovery flash mutation attempted"
+    },
+    {
+      "id": "CRITICAL-002",
+      "description": "Reject write attempts touching the conservative system-memory or option-control windows, including DMA destinations and locked attempts.",
+      "requirements": [
+        "RECOVERY-003"
+      ],
+      "classification": "conservative-emulator-policy",
+      "mandatory": true,
+      "applicability": {
+        "phases": [
+          "boot",
+          "application",
+          "interrupt"
+        ],
+        "modes": [
+          "run",
+          "step",
+          "replay",
+          "fast"
+        ]
+      },
+      "requiredObservations": [
+        "memory-write",
+        "initial-state",
+        "instruction-boundary",
+        "register-transition",
+        "dma-transfer"
+      ],
+      "predicate": {
+        "op": "all",
+        "args": [
+          {
+            "op": "in",
+            "field": "kind",
+            "values": [
+              "memory-write",
+              "dma-span"
+            ]
+          },
+          {
+            "op": "overlap",
+            "space": "cpu",
+            "ranges": [
+              [
+                535822336,
+                536870912
+              ],
+              [
+                1073888264,
+                1073888268
+              ],
+              [
+                1073888276,
+                1073888288
+              ]
+            ]
+          }
+        ]
+      },
+      "action": "terminate-session",
+      "warning": "Your custom firmware probably will brick your device. Do not flash it.",
+      "legacy": {
+        "severity": "critical",
+        "unsafeWhen": "pass",
+        "status": "pass"
+      },
+      "title": "Persistent system configuration write attempted"
+    },
+    {
+      "id": "CRITICAL-003",
+      "description": "Reject each selected SPI NOR command byte outside the modeled allowlist before command handling. This includes unknown commands; it is a conservative emulator restriction.",
+      "requirements": [
+        "RECOVERY-003"
+      ],
+      "classification": "conservative-emulator-policy",
+      "mandatory": true,
+      "applicability": {
+        "phases": [
+          "boot",
+          "application",
+          "interrupt"
+        ],
+        "modes": [
+          "run",
+          "step",
+          "replay",
+          "fast"
+        ]
+      },
+      "requiredObservations": [
+        "spi-command"
+      ],
+      "predicate": {
+        "op": "all",
+        "args": [
+          {
+            "op": "in",
+            "field": "kind",
+            "values": [
+              "spi-command"
+            ]
+          },
+          {
+            "op": "not-in",
+            "field": "command",
+            "values": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6,
+              11,
+              32,
+              159,
+              216
+            ]
+          }
+        ]
+      },
+      "action": "terminate-session",
+      "warning": "Your custom firmware probably will brick your device. Do not flash it.",
+      "legacy": {
+        "severity": "critical",
+        "unsafeWhen": "pass",
+        "status": "pass"
+      },
+      "title": "Forbidden or unmodeled SPI flash command attempted"
+    },
+    {
+      "id": "CRITICAL-004",
+      "description": "Reject every program or aligned erase effect overlapping installed SPI storage [0, 196608), even while locked or if bytes would remain identical.",
+      "requirements": [
+        "RECOVERY-002",
+        "RECOVERY-004"
+      ],
+      "classification": "conservative-emulator-policy",
+      "mandatory": true,
+      "applicability": {
+        "phases": [
+          "boot",
+          "application",
+          "interrupt"
+        ],
+        "modes": [
+          "run",
+          "step",
+          "replay",
+          "fast"
+        ]
+      },
+      "requiredObservations": [
+        "spi-mutation"
+      ],
+      "predicate": {
+        "op": "all",
+        "args": [
+          {
+            "op": "in",
+            "field": "kind",
+            "values": [
+              "spi-mutation"
+            ]
+          },
+          {
+            "op": "overlap",
+            "space": "spi-flash",
+            "ranges": [
+              [
+                0,
+                196608
+              ]
+            ]
+          }
+        ]
+      },
+      "action": "terminate-session",
+      "warning": "Your custom firmware probably will brick your device. Do not flash it.",
+      "legacy": {
+        "severity": "critical",
+        "unsafeWhen": "pass",
+        "status": "pass"
+      },
+      "title": "Installed SPI firmware mutation attempted"
+    },
+    {
+      "id": "CRITICAL-005",
+      "description": "Reject a DMA destination span whose mathematical exclusive end exceeds the 32-bit CPU address space. Both potential memory buffers are examined before enable/configuration and reload.",
+      "requirements": [
+        "RECOVERY-002",
+        "RECOVERY-003"
+      ],
+      "classification": "conservative-emulator-policy",
+      "mandatory": true,
+      "applicability": {
+        "phases": [
+          "boot",
+          "application",
+          "interrupt"
+        ],
+        "modes": [
+          "run",
+          "step",
+          "replay",
+          "fast"
+        ]
+      },
+      "requiredObservations": [
+        "initial-state",
+        "instruction-boundary",
+        "memory-write",
+        "register-transition",
+        "dma-transfer"
+      ],
+      "predicate": {
+        "op": "all",
+        "args": [
+          {
+            "op": "in",
+            "field": "kind",
+            "values": [
+              "dma-span"
+            ]
+          },
+          {
+            "op": "gt",
+            "field": "end",
+            "value": 4294967296
+          }
+        ]
+      },
+      "action": "terminate-session",
+      "warning": "Your custom firmware probably will brick your device. Do not flash it.",
+      "legacy": {
+        "severity": "critical",
+        "unsafeWhen": "pass",
+        "status": "pass"
+      },
+      "title": "Unsafe DMA destination attempted"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "format": "sq64-requirements",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "profiles": {
     "image": "Bounded full-system VSB structural checks",
     "hardware": "Device contract, including physical evidence and declared feature behavior",

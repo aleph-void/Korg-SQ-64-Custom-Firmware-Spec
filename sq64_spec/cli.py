@@ -24,8 +24,34 @@ def main():
     parser.add_argument('--output', type=Path)
     parser.add_argument('--catalog', action='store_true')
     parser.add_argument('--board-contract', action='store_true')
+    parser.add_argument('--watch-rules', action='store_true', help='Export the executable runtime watch contract')
+    parser.add_argument('--watch-fixtures', action='store_true', help='Export shared runtime monitor fixtures')
+    parser.add_argument('--watch-session', type=Path, help='Replay supplied watch observations offline; does not prove emulator hook coverage')
     parser.add_argument('--evidence-template', action='store_true', help='Write an image-bound checklist with every required case marked not-run')
     args = parser.parse_args()
+    exports = (args.catalog, args.board_contract, args.watch_rules, args.watch_fixtures)
+    if sum(exports) > 1: parser.error('Choose one catalog/contract/fixture export')
+    if args.watch_session and (any(exports) or args.image or args.evidence or args.transcript or args.backup or args.readback or args.declaration or args.baseline or args.recovery_policy or args.policy_sha256 or args.write_trace or args.artifact_root or args.evidence_template or args.profile != 'hardware'):
+        parser.error('--watch-session is a standalone observation replay')
+    if args.watch_rules or args.watch_fixtures or args.watch_session:
+        try:
+            if args.watch_rules:
+                from .watch import load_rules
+                result = load_rules(); code = 0
+            elif args.watch_fixtures:
+                result = load_json(Path(__file__).with_name('watch-fixtures.json').read_text(encoding='utf-8')); code = 0
+            else:
+                from .watch_session import replay_session
+                with args.watch_session.open('rb') as stream: raw = stream.read(16 * 1024 * 1024 + 1)
+                result = replay_session(raw)
+                code = {'active': 0, 'violation': 1, 'monitoring-error': 3}[result['status']]
+            text = json.dumps(result, indent=2) + '\n'
+            if args.output: args.output.write_text(text, encoding='utf-8')
+            else: print(text, end='')
+            if code: raise SystemExit(code)
+            return
+        except (ValueError, OSError, RecursionError) as error:
+            parser.exit(3, 'Watch tooling error: ' + str(error) + '\n')
     if args.catalog: print(json.dumps(catalog(), indent=2)); return
     if args.board_contract:
         print(Path(__file__).with_name('board.json').read_text(), end='')

@@ -1,0 +1,50 @@
+{
+  "kind": "watch-violation",
+  "ruleId": "CRITICAL-001",
+  "matchingRuleIds": [
+    "CRITICAL-001"
+  ],
+  "warning": "Your custom firmware probably will brick your device. Do not flash it.",
+  "action": "terminate-session",
+  "event": {
+    "kind": "memory-write",
+    "sequence": 1,
+    "tick": 1,
+    "source": "cpu",
+    "pc": 2097160,
+    "exception": 0,
+    "phase": "boot",
+    "mode": "run",
+    "space": "cpu",
+    "address": 2097152,
+    "width": 1,
+    "value": "01",
+    "locked": null
+  },
+  "match": {
+    "kind": "memory-write",
+    "space": "cpu",
+    "operation": "write",
+    "source": "cpu",
+    "address": 2097152,
+    "length": 1,
+    "width": 1,
+    "value": "01",
+    "origin": "memory-write",
+    "number": null,
+    "command": null,
+    "end": 2097153
+  },
+  "identity": {
+    "imageSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "specVersion": "0.4.0",
+    "rulesetSha256": "fbc67b69cb0a9e092ddec3a19e5d962bbcbf12e30a862ac61970818236c1f51b",
+    "modelContractSha256": "79ad2f5d1c96bd290f38b1c63c53abb03b73e7ee6993c51c85e05b30bb2757e7",
+    "emulator": {
+      "name": "synthetic-fixture",
+      "version": "1",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "tickUnit": "synthetic-instruction-ticks"
+    }
+  }
+}

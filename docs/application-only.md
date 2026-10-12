@@ -1,6 +1,6 @@
 # Application-only recovery restrictions
 
-Specification 0.3.0 adds an opt-in `application-only` acceptance gate. It includes the 51 software requirements and RECOVERY-001 through RECOVERY-006. Missing policy, missing evidence, unverified artifacts, incomplete captures, or a failed requirement reject acceptance with exit code 1. Existing profiles retain their scope.
+Specification 0.4.0 retains the opt-in `application-only` acceptance gate. It includes the 51 software requirements and RECOVERY-001 through RECOVERY-006. Missing policy, missing evidence, unverified artifacts, incomplete captures, or a failed requirement reject acceptance with exit code 1. Existing profiles retain their scope.
 
 The first 64 KiB of internal flash is immutable against a reviewed, known-recoverable baseline. The reviewer must identify and preserve every additional recovery code/data dependency. Neither installation nor runtime may attempt to erase or program protected ranges, even if the resulting bytes would be identical. Option unlocking/programming, OTP writes, protection/RDP changes, boot/debug configuration changes, persistent status/security writes, chip/mass erases and unknown persistent operations are forbidden. Reviewed write allowlists differ between installation and runtime. Reserved, calibration and unknown ownership remain protected by omission from those allowlists.
 
@@ -18,7 +18,7 @@ python -m sq64_spec candidate.VSB --profile application-only \
 
 The policy hash is an explicit reviewer-selected trust anchor, not an approval inferred from the candidate. Bind it to the exact raw JSON bytes. Evidence uses the existing v2 schema and exact specification/model revision. Recovery inputs supplied to another profile are rejected rather than ignored. Policy and trace paths are CLI inputs; installer, observer and evidence artifact paths must stay within `--artifact-root` and their bytes must match their hashes.
 
-A policy has `format: "sq64-recovery-policy"`, integer `version: 1`, `specVersion: "0.3.0"`, `baselineSha256`, a nonempty `reviewRevision`, and `installer` and `observer` objects, each containing `artifact` and `artifactSha256`. It also requires:
+A policy has `format: "sq64-recovery-policy"`, integer `version: 1`, `specVersion: "0.4.0"`, `baselineSha256`, a nonempty `reviewRevision`, and `installer` and `observer` objects, each containing `artifact` and `artifactSha256`. It also requires:
 
 - `protected`: additional nonoverlapping ranges with `space`, `start`, `length`, `purpose` and `kind` (`recovery`, `reserved` or `calibration`). The mandatory internal 64 KiB cannot be redefined. Recovery dependencies must be fully available in the baseline package.
 - `writes`: exactly `installation` and `runtime` lists of nonoverlapping ranges with the same range fields except `kind`. They cannot overlap protected storage.
@@ -34,7 +34,7 @@ Each event has a consecutive zero-based `sequence` and `operation`. `program` an
 
 ## Emulator critical result contract
 
-[`critical.json`](../sq64_spec/critical.json) defines separate hazard predicates. Each result carries `severity: "critical"` and `unsafeWhen: "pass"`. A predicate **passing means a hazard was detected**. Conformance `RECOVERY-*` results retain ordinary semantics: pass means the restriction was satisfied. Consumers must never treat every conformance pass as a hazard.
+[`watch-rules.json`](../sq64_spec/watch-rules.json) defines executable runtime hazard predicates. [`critical.json`](../sq64_spec/critical.json) is generated legacy metadata. See the [runtime contract](runtime-watch.md) for continuous observation, strict validation, capabilities, ordering and terminal-session behavior, and the [emulator handoff](emulator-watch-handoff.md) for implementation hooks and required integration tests. Each result carries `severity: "critical"` and `unsafeWhen: "pass"`. A predicate **passing means a hazard was detected**. Conformance `RECOVERY-*` results retain ordinary semantics: pass means the restriction was satisfied. Consumers must never treat every conformance pass as a hazard.
 
 ```json
 {
@@ -42,7 +42,10 @@ Each event has a consecutive zero-based `sequence` and `operation`. `program` an
   "severity": "critical",
   "unsafeWhen": "pass",
   "status": "pass",
-  "operation": "system-or-option-write",
+  "operation": "write",
+  "space": "cpu",
+  "width": 4,
+  "value": "00000000",
   "address": 1073888276,
   "length": 4,
   "source": "cpu",
@@ -50,7 +53,7 @@ Each event has a consecutive zero-based `sequence` and `operation`. `program` an
 }
 ```
 
-Automatic termination is enabled by default. A matching result stops firmware execution, disconnects its MIDI transport, latches the first detection and warns: **“Your custom firmware probably will brick your device. Do not flash it.”** Preserve the result, operation/address, source, image identity and execution report. Run, Step, Reset, replay and MIDI cannot resume the terminated image. Further image loads are blocked in that terminated session. Reload the containing browser page or restart the native workbench to investigate another image. Saving the report must remain possible. In the browser, terminate the execution worker after delivering its final snapshot.
+Automatic termination is enabled by default and has no GUI bypass. Monitoring starts before firmware execution and does not depend on Validate Image or debugging. A monitoring failure also terminates, with a distinct monitoring-error diagnostic and no fabricated hazard pass. A matching result stops firmware execution, disconnects its MIDI transport, latches the first detection and warns: **“Your custom firmware probably will brick your device. Do not flash it.”** Preserve the result, operation/address, source, image identity and execution report. Run, Step, Reset, replay and MIDI cannot resume the terminated image. Further image loads are blocked in that terminated session. Reload the containing browser page or restart the native workbench to investigate another image. Saving the report must remain possible. In the browser, terminate the execution worker after delivering its final snapshot.
 
 The current runtime predicates conservatively detect internal recovery flash writes/erase arming, system/option writes, forbidden or unknown SPI commands, installed SPI image writes and unsafe DMA destinations. They watch attempted operations even if the modeled flash is locked. The stock updater may trigger them when it attempts to rewrite installed firmware. SPI installation destinations `[0, 0x30000)` are frozen during ordinary emulation; staging writes are separate. Untriggered predicates remain `not-run`: they do not claim that every triggering path was exercised.
 
