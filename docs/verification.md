@@ -50,7 +50,7 @@ The generated cases start as not-run and require no execution contexts until a p
 {
   "format": "sq64-evidence",
   "version": 2,
-  "specVersion": "0.2.0",
+  "specVersion": "0.3.0",
   "imageSha256": "<SHA-256 of exact VSB>",
   "contexts": {
     "documentation-review": {
@@ -120,3 +120,7 @@ The sibling browser model has bounded private stock/custom-image results for sta
 The model contract records 85 button positions, six encoder pairs, panel SPI pipelines, display pixel order, power-hold behavior and 17 top-edge output observations. It does not certify board wiring or voltages. Treat normal firmware power-button shutdown as part of persistence acceptance; immediate reset and closing the browser are not equivalent.
 
 Keep these validators independent of the updater implementation. Literal golden vectors and independently authored fixtures supplement round trips. Independent physical captures and a reviewed spec revision are required before removing the hardware release gate. No bounded profile guarantees every possible input or event schedule.
+
+## Recovery restrictions and hazard results
+
+See [application-only acceptance](application-only.md) for the pinned policy, write-capture schema and default emulator termination contract. Critical hazard results use `severity: "critical"` and `unsafeWhen: "pass"`; ordinary conformance passes retain their existing meaning.

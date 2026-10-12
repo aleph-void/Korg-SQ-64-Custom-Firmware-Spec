@@ -1,6 +1,6 @@
 # Firmware interface contracts
 
-Specification version 0.2.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board.
+Specification version 0.3.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board.
 
 ## Full-system VSB
 
@@ -109,3 +109,7 @@ Every record includes `kind`, `index`, `project`, `data` and `sha256`. Kinds are
 `data` is the contiguous hexadecimal response message and `sha256` is the lowercase digest of its decoded wire bytes. Empty optional slots use null for both fields. Global, current control, current project and every pattern referenced by a header must have data. Empty-response frames are not stored as populated records. Reject wrong channel/product/command/tag, noncanonical packing, incorrect length/index, duplicate keys, unmatched digests, orphan patterns, missing required records and out-of-scope data. Records are limited to 7500 wire bytes, and archives to 4250 records; the exact expected set is additionally checked. JSON booleans do not count as integer indices or versions.
 
 An archive does not store project-session ACK traffic. Its integrity check therefore cannot establish BACKUP-002 finalization, receiver input validation, successful restore or persistence. `compare_backups` checks complete logical snapshots, including source-empty slots; it does not assume that an empty source instructs erasure of a populated destination.
+
+## Recovery restrictions and hazard results
+
+See [application-only acceptance](application-only.md) for the pinned policy, write-capture schema and default emulator termination contract. Critical hazard results use `severity: "critical"` and `unsafeWhen: "pass"`; ordinary conformance passes retain their existing meaning.

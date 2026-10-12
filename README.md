@@ -1,6 +1,6 @@
 # Independent SQ-64 firmware specification
 
-Version **0.2.0** defines 65 requirements, 248 named execution/review cases, seven executable image checks, a machine-readable emulator interface, independent update and backup validators, and evidence reporting. The code, documentation and fixtures are original; no Korg firmware or decompiled functions are distributed.
+Version **0.3.0** defines 71 requirements, 291 named execution/review cases, seven executable image checks, a machine-readable emulator interface, independent update and backup validators, and evidence reporting. The code, documentation and fixtures are original; no Korg firmware or decompiled functions are distributed.
 
 The software contract and validation tooling are usable now. **Physical hardware conformance remains incomplete:** exact board parts/wiring, protected storage ownership, electrical limits and worst-case timing still require independent measurements. A passing software report does not guarantee that arbitrary firmware will work on a physical SQ-64.
 
@@ -25,6 +25,7 @@ Install with `python -m pip install .` to use `sq64-conformance` from any direct
 | --- | ---: | --- |
 | `image` | 7 | Full-system package geometry, identity, version, checksums and reset vectors |
 | `software` | 51 | All applicable named cases have qualifying candidate evidence against the bounded software interface |
+| `application-only` | 57 | Software evidence plus a pinned baseline, recovery policy, complete write captures and recovery/interruption cases; missing evidence is rejection |
 | `hardware` (default) | 61 | Requires device measurements and a completed board contract; release-gated in this revision |
 | `korg-compatible` | 65 | Hardware contract plus strict declared compatibility; release-gated in this revision |
 
@@ -37,6 +38,7 @@ Reports bind image results to the exact VSB SHA-256 and include hashes of succes
 - [Normative requirement catalog](docs/requirements.md): required cases, profiles, evidence kinds and quantitative obligations.
 - [Image, memory, panel, power and wire contracts](docs/contracts.md), with [machine-readable model facts](sq64_spec/board.json).
 - [Evidence and candidate declaration format](docs/verification.md), including migration from v1 and the physical test campaign.
+- [Application-only restrictions and emulator critical results](docs/application-only.md).
 - [Public-source provenance](PROVENANCE.md).
 
 Generate a checklist, fill in the declared features and acceptance bounds, run the named cases, then attach observations and artifact hashes. The validator rejects stale identity, missing cases, failed cases hidden under a pass, invalid measurements and artifacts escaping the capture root. Tool hashes and observations remain supplied assertions; verifying an artifact's bytes does not independently reproduce its experiment. Diagnostic probes are useful model tests but cannot satisfy candidate execution requirements.

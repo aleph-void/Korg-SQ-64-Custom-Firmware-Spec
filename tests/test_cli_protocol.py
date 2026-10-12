@@ -128,7 +128,7 @@ class CliTests(unittest.TestCase):
         self.assertNotIn('Traceback', result.stderr)
 
     def test_catalog_and_board_contract(self):
-        self.assertEqual(len(json.loads(self.cli('--catalog').stdout)['requirements']), 65)
+        self.assertEqual(len(json.loads(self.cli('--catalog').stdout)['requirements']), 71)
         board = json.loads(self.cli('--board-contract').stdout)
         buttons = board['panel']['buttons']
         self.assertEqual(len(buttons), 85)

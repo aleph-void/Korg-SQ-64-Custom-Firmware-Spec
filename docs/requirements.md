@@ -1,10 +1,10 @@
 # SQ-64 requirements catalog
 
-Version 0.2.0. Generated from `sq64_spec/requirements.json`.
+Version 0.3.0. Generated from `sq64_spec/requirements.json`.
 
 SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.
 
-Hardware and compatibility profiles require candidate hardware observations for runtime requirements. The software profile also accepts candidate emulator observations against the model contract. Review evidence is accepted only where listed. Image checks are executed directly and cannot be overridden.
+Hardware and compatibility profiles require candidate hardware observations for runtime requirements. Software and application-only profiles also accept candidate emulator observations for inherited software requirements. Recovery requirements use their explicit evidence kinds. Application-only rejects any missing requirement or failed mandatory policy check. Review evidence is accepted only where listed. Image checks are executed directly and cannot be overridden.
 
 ## PKG-001 — Container
 
@@ -12,7 +12,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -22,7 +22,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -32,7 +32,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -42,7 +42,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -52,7 +52,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -62,7 +62,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -72,7 +72,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed by sq64_spec.image.inspect; corrupt-field negative fixtures cover each check.
 
-**Profiles:** image, software, hardware, korg-compatible
+**Profiles:** image, software, hardware, korg-compatible, application-only
 
 **Evidence kinds:** static
 
@@ -82,7 +82,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Cold boot twice with RAM filled with 00, FF and deterministic random bytes; compare declared ready condition.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -94,7 +94,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Boot using held panel signals, then release; verify version and updater discovery on candidate execution.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -106,7 +106,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Save distinct values, restart twice, export and compare logical data.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -118,7 +118,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Inject invalid vectors and unaligned multiword access in original diagnostic builds; expect explicit failure.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -142,7 +142,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Directed aligned/misaligned scalar, LDM/STM, LDRD/STRD and FP cases; no model bypass.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -154,7 +154,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Pending interrupts across mask transitions and nested higher/lower-priority delivery.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -166,7 +166,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Preempt thread/handler on MSP/PSP, including IT slots, nested IRQs, eager and lazy FP.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -178,7 +178,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Guard every mapped boundary; stress maximum queues and stack depth under simultaneous events.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -190,7 +190,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Replay deterministic varied interleavings; retain every counterexample and its seed.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -202,7 +202,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Exercise 64 pads, 21 named buttons, release, hold, simultaneous presses and repeated transitions.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -214,7 +214,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** One detent each way, wrap, acceleration and bursts; compare physical and modeled input events.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -226,7 +226,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** One indicator at a time and all indicators; inspect row multiplexing and physical output.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -238,7 +238,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Blank, all-on, checkerboard, edge pixels, frame refresh and custom menu drawing from candidate data.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -250,7 +250,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Deterministic combined workload; no stuck press or silently lost release.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -276,7 +276,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** All status/channel values, two/three-byte messages, all data bytes, running status, truncation and saturation.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -288,7 +288,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Insert clock/start/continue/stop at every boundary; verify parser state remains valid.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -300,7 +300,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Wrong IDs, incomplete groups, excessive lengths, timeout, nested F0 and recovery to next valid frame.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -312,7 +312,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Every supported CIN, all final SysEx group sizes, cable indices, 0/4/64-byte transfers and invalid sizes.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -338,7 +338,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Interleave distinct streams on every available logical and physical port.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -364,7 +364,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** First pulse, rate changes, missing/extra pulses, timestamp wrap and maximum supported rate.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -378,7 +378,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Repeated transitions at step boundaries and during note/gate activity.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -456,7 +456,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Custom firmware supplies explicit feature profile; Korg-compatible profile adds stock-semantic tests.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -480,7 +480,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Boundary and cross-page writes, disabled writes, busy status, sector ends and malformed requests.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -492,7 +492,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Exercise every project/control/scale slot with distinct synthetic data and normal restart.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -504,7 +504,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Interrupt each save phase in software; require previous or new valid state, or documented explicit recovery.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -516,7 +516,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Every field boundary, cross-field invalid combination, truncated dump and inconsistent presence map.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -528,7 +528,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Round-trip supported formats; explicitly reject unsupported versions before writing.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -540,7 +540,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Trace operation counts under repeated edits/saves and compare declared endurance policy.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -554,7 +554,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Search/version requests in update mode on cold boot and after an update.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -566,7 +566,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Malformed begin matrix and boundary lengths; inspect flash before and after rejection.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -578,7 +578,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** All input byte values and all partial groups; injected mask/checksum faults must fail.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -590,7 +590,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Executed transcript validator plus candidate receiver tests for duplicates, gaps and NAK behavior.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -602,7 +602,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Complete update in emulation and hardware; verify display completion and post-reboot identity.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -614,7 +614,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Stop host traffic at each boundary; verify declared response and retained data without blind retry.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -626,7 +626,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Candidate-to-candidate or candidate-to-approved-restore update, then cold boot.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -638,7 +638,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Documentation check; deliberate physical power cuts during internal flash programming are excluded.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** review, hardware; emulator also accepted in software
 
@@ -650,7 +650,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Check 64 saved project slots, current edit buffer, pattern presence, controls, scales and global settings.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** review, hardware; emulator also accepted in software
 
@@ -662,7 +662,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Normal, empty, partial and interrupted project sessions; no incomplete archive may be labeled complete.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -674,7 +674,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Wrong slot, wrong type, altered payload, duplicate/missing pattern and oversized archive tests.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -686,7 +686,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Compare all included logical bytes after write, restart and export; preserve intentionally excluded slots.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -698,7 +698,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Versioned field inventory, partitioned tests and deterministic fuzz seeds.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -710,7 +710,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** High water marks under maximal simultaneous supported workload; detect guard violations.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -724,7 +724,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Record duration, traffic and state checks; reproduce with instruction/event replay where applicable.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
@@ -738,7 +738,7 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 **Verification:** Reject stale hashes, unknown IDs and missing evidence; never convert not-run into pass.
 
-**Profiles:** hardware, software, korg-compatible
+**Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** review, hardware; emulator also accepted in software
 
@@ -791,3 +791,75 @@ Hardware and compatibility profiles require candidate hardware observations for 
 **Evidence kinds:** review, hardware
 
 **Required cases:** `declared-deviations`, `rationale`, `no-expected-failure-passes`
+
+## RECOVERY-001 — Preserved recovery image
+
+**Requirement:** Firmware or its delivery tooling SHALL preserve the entire first 64 KiB and all reviewed recovery code/data dependencies byte-for-byte against an explicitly approved baseline; identify the actual installed baseline by content, not a version string.
+
+**Verification:** Execute protected-image comparison with a reviewer-pinned policy; independently review dependency closure, including SPI-loaded code/data, vectors, startup, panel entry, USB, installer and RAM writer. Verify baseline content and approved installer/observer artifacts.
+
+**Profiles:** application-only
+
+**Evidence kinds:** review, hardware
+
+**Required cases:** `installed-baseline-content`, `reset-and-vectors`, `startup-and-recovery-chord`, `usb-and-updater`, `ram-writer`, `external-dependency-closure`, `approved-installer-and-observer`
+
+## RECOVERY-002 — No recovery mutation
+
+**Requirement:** Firmware or its delivery tooling SHALL perform no erase or program attempts on protected recovery, reserved or calibration regions during installation or application execution, even if an operation would restore identical bytes or be rejected by hardware.
+
+**Verification:** Validate complete installation and runtime mutation captures. Review capture coverage of flash aliases, CPU, DMA, SPI commands and every programming path; before/after equality alone does not pass.
+
+**Profiles:** application-only
+
+**Evidence kinds:** hardware, emulator
+
+**Required cases:** `zero-protected-install-writes`, `zero-protected-runtime-writes`, `erase-before-rewrite-rejected`, `all-aliases-and-dma-observed`, `capture-start-to-completion`
+
+## RECOVERY-003 — No irreversible configuration
+
+**Requirement:** Firmware or its delivery tooling SHALL never unlock or program option bytes, write OTP, change protection/boot/debug configuration, issue mass/chip erase or alter persistent flash status/security configuration in this profile.
+
+**Verification:** Reject every prohibited or unclassified persistent mutation attempt in both captures, and review instrumentation coverage of irreversible controls. Missing register/command modeling is rejection, not an ignored event.
+
+**Profiles:** application-only
+
+**Evidence kinds:** hardware, emulator
+
+**Required cases:** `option-unlock-and-write`, `otp`, `protection-and-rdp`, `boot-and-debug`, `chip-and-mass-erase`, `persistent-status-security`, `unknown-operation-rejection`
+
+## RECOVERY-004 — Persistent write allowlist
+
+**Requirement:** Firmware or its delivery tooling SHALL restrict candidate changes and every persistent mutation to reviewed phase-specific application/user-data ranges, preserving all other storage; respect approved page and erase geometry.
+
+**Verification:** Validate non-overlapping policy ranges, protected-region exclusion, candidate destination changes, exact event ranges and geometry. A mutation crossing an allowlist boundary fails even if its start address is permitted. Installation traces must cover every changed payload byte.
+
+**Profiles:** application-only
+
+**Evidence kinds:** review, hardware, emulator
+
+**Required cases:** `reviewed-storage-ownership`, `installation-ranges`, `runtime-ranges`, `reserved-and-calibration-guards`, `cross-boundary-rejection`, `page-and-erase-geometry`, `changed-byte-program-coverage`
+
+## RECOVERY-005 — Recovery before application
+
+**Requirement:** Firmware or its delivery tooling SHALL enter trusted recovery from the physical startup chord before executing custom application code, with the application absent, corrupt or immediately faulting; keep the recovery transport and approved restore operation usable.
+
+**Verification:** Cold boot using modeled or physical panel inputs, record execution ordering and restore traffic. Include a valid-checksum bad application, invalid vectors and corrupt application metadata; do not patch runtime state to force update mode.
+
+**Profiles:** application-only
+
+**Evidence kinds:** hardware, emulator
+
+**Required cases:** `chord-before-application`, `application-absent`, `application-corrupt`, `application-immediate-fault`, `valid-checksum-bad-application`, `invalid-application-vectors`, `corrupt-application-metadata`, `approved-restore`
+
+## RECOVERY-006 — Recovery after interrupted installation
+
+**Requirement:** Firmware or its delivery tooling SHALL preserve a usable trusted recovery path after interruption at every installation phase, without relying on the custom application or previously erased recovery dependencies.
+
+**Verification:** Use software fault injection before/after every persistent mutation and model partial erase/program, commit metadata and transport interruption. Prove recovery entry and a subsequent approved restore for each resulting state. Deliberate physical programming power cuts remain excluded; physical guarantees require separate evidence and enforcement.
+
+**Profiles:** application-only
+
+**Evidence kinds:** hardware, emulator
+
+**Required cases:** `before-first-mutation`, `each-erase-boundary`, `each-program-boundary`, `partial-erase-and-program`, `commit-metadata`, `disconnect-and-timeout`, `cold-recovery-each-state`, `approved-restore-each-state`, `fault-model-and-coverage`

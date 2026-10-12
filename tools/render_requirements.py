@@ -10,7 +10,7 @@ def render(document):
     lines = ['# SQ-64 requirements catalog', '',
              f"Version {document['version']}. Generated from `sq64_spec/requirements.json`.", '',
              'SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.', '',
-             'Hardware and compatibility profiles require candidate hardware observations for runtime requirements. The software profile also accepts candidate emulator observations against the model contract. Review evidence is accepted only where listed. Image checks are executed directly and cannot be overridden.', '']
+             'Hardware and compatibility profiles require candidate hardware observations for runtime requirements. Software and application-only profiles also accept candidate emulator observations for inherited software requirements. Recovery requirements use their explicit evidence kinds. Application-only rejects any missing requirement or failed mandatory policy check. Review evidence is accepted only where listed. Image checks are executed directly and cannot be overridden.', '']
     for r in document['requirements']:
         lines += [f"## {r['id']} — {r['title']}", '',
                   '**Requirement:** Firmware or its delivery tooling SHALL ' + r['shall'][0].lower() + r['shall'][1:], '',
