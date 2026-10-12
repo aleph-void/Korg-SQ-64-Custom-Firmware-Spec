@@ -1,6 +1,6 @@
 # Firmware interface contracts
 
-Specification version 0.5.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board. The register addresses, DMA stream assignments and programming sequences behind these contracts are collected in the [peripheral register interface](peripheral-registers.md).
+Specification version 0.6.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board. The register addresses, DMA stream assignments and programming sequences behind these contracts are collected in the [peripheral register interface](peripheral-registers.md).
 
 ## Full-system VSB
 

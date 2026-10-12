@@ -47,7 +47,7 @@ Initialization requires an identity object with exactly:
 ```json
 {
   "imageSha256": "<64 lowercase hexadecimal digits: exact loaded file>",
-  "specVersion": "0.5.0",
+  "specVersion": "0.6.0",
   "rulesetSha256": "<canonical ruleset digest>",
   "modelContractSha256": "<SHA-256 of exact packaged board.json bytes>",
   "emulator": {

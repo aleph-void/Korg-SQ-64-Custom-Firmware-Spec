@@ -1,6 +1,6 @@
 # SQ-64 requirements catalog
 
-Version 0.5.0. Generated from `sq64_spec/requirements.json`.
+Version 0.6.0. Generated from `sq64_spec/requirements.json`.
 
 SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.
 
@@ -655,6 +655,96 @@ Hardware and compatibility profiles require candidate hardware observations for 
 **Evidence kinds:** hardware; emulator also accepted in software
 
 **Required cases:** `declared-combinations`, `press-release-ordering`, `shift-alone-no-effect`, `undeclared-combination-guards`, `state-guards`
+
+## TRACK-001 — Track selection
+
+**Requirement:** Firmware or its delivery tooling SHALL select the corresponding track as the active edit track through each of the A, B, C and D keys, make the active track observable, route subsequent edits to the selected track only, and change no pattern, workspace or settings data from track selection alone.
+
+**Verification:** Select every track while each holds distinct synthetic data, stopped and while sequencing; confirm the reported selection, apply an edit and verify only the selected track changes, and digest-compare all patterns, the workspace and settings after selection-only sequences.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `each-track-key`, `selection-report`, `edits-follow-selection`, `selection-only-no-mutation`, `while-sequencing`
+
+## MODE-001 — Edit mode keys
+
+**Requirement:** Firmware or its delivery tooling SHALL enter a documented edit mode from each of the PITCH, GATE, MOD and CONTROL keys, make the active mode observable, scope edits in each mode to that mode's documented parameters on the active track, and change no data from mode entry or exit alone.
+
+**Verification:** Enter and leave each mode while stopped and while sequencing, confirm the reported mode, perform a documented edit in each mode and verify only that mode's parameters change; digest-compare the workspace, saved slots and settings after entry-and-exit-only sequences.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `pitch-key`, `gate-key`, `mod-key`, `control-key`, `mode-report`, `edit-scoping`, `entry-exit-no-mutation`
+
+## LOOP-001 — Loop key
+
+**Requirement:** Firmware or its delivery tooling SHALL provide the documented loop function from the LOOP key, declare its operations and bounds, keep every loop operation within the declared bounds of the active pattern, and resume the declared normal playback behavior when the loop is cleared.
+
+**Verification:** Exercise each declared loop operation at its boundary values, verify playback output honors the declared loop region, clear the loop and compare subsequent output against never-looped playback; digest-compare saved slots and settings afterward.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `declared-loop-operations`, `boundary-values`, `playback-honors-loop`, `clear-restores-normal`, `saved-data-guards`
+
+## BAR-001 — Bar selection
+
+**Requirement:** Firmware or its delivery tooling SHALL select the corresponding documented bar of the active pattern through each of the numbered keys 1 to 4, make the selected bar observable, direct step edits to steps within the selected bar, and change no pattern data from bar selection alone.
+
+**Verification:** Select each bar of patterns holding distinct synthetic data per bar, confirm the reported bar and that pad edits land only in the selected bar's steps; digest-compare pattern data after selection-only sequences, stopped and while sequencing.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `each-bar-key`, `selection-report`, `edits-land-in-selected-bar`, `selection-only-no-mutation`, `while-sequencing`
+
+## TAP-001 — Tap tempo
+
+**Requirement:** Firmware or its delivery tooling SHALL derive the internal tempo from the documented TAP key sequence within the declared supported tempo range, handle out-of-range and incomplete tap sequences as documented without undefined tempo, and change no stored data from taps alone.
+
+**Verification:** Tap documented sequences at the minimum, a nominal and the maximum supported tempo and measure resulting output intervals against the declared tolerance; apply too-fast, too-slow and single taps with explicit expected handling; digest-compare saved slots and committed settings afterward.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `minimum-tempo`, `nominal-tempo`, `maximum-tempo`, `out-of-range-taps`, `single-tap`, `measured-intervals`, `stored-data-guards`
+
+**Quantitative bounds:** A candidate limit and matching measurements, including uncertainty, are required. Every declared metric must be present.
+
+## TEMPO-001 — Tempo knob
+
+**Requirement:** Firmware or its delivery tooling SHALL adjust the internal tempo from the TEMPO encoder across the declared supported tempo range, apply one documented increment per detent in each direction, clamp at the declared limits without wraparound, and make the current tempo observable.
+
+**Verification:** Step the encoder through the full range in both directions, including repeated detents at both limits and any declared acceleration; measure output intervals at the minimum, a nominal and the maximum tempo against the declared tolerance; digest-compare saved slots and committed settings after adjustment-only sequences.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `each-direction-detent`, `full-range-sweep`, `clamp-at-limits`, `tempo-report`, `measured-intervals`, `settings-guards`
+
+**Quantitative bounds:** A candidate limit and matching measurements, including uncertainty, are required. Every declared metric must be present.
+
+## SWING-001 — Swing knob
+
+**Requirement:** Firmware or its delivery tooling SHALL adjust the documented swing amount from the SWING encoder across the declared supported range, apply the declared timing offset only to the documented steps, clamp at the declared limits, and produce unswung timing at the neutral setting.
+
+**Verification:** Measure step timing at the neutral setting and at the declared boundary swing values against the declared tolerance, verify steps outside the documented swing set keep nominal timing, sweep both directions with clamping at the limits, and digest-compare saved slots and committed settings after adjustment-only sequences.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `neutral-unswung`, `boundary-swing-values`, `affected-steps-offset`, `unaffected-steps-nominal`, `clamp-at-limits`, `measured-timing`, `settings-guards`
+
+**Quantitative bounds:** A candidate limit and matching measurements, including uncertainty, are required. Every declared metric must be present.
 
 ## VUP-001 — Discovery
 

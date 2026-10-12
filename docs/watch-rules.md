@@ -1,8 +1,8 @@
 # Runtime watch rule reference
 
-Specification 0.5.0; contract/vocabulary v1. Generated from `sq64_spec/watch-rules.json`.
+Specification 0.6.0; contract/vocabulary v1. Generated from `sq64_spec/watch-rules.json`.
 
-Canonical ruleset SHA-256: `4c3171c0b816858beb4ac71ced9b875376bcc944baa0f209c997005e08f943c5`
+Canonical ruleset SHA-256: `b250223907339bfcf9894f7db864cc09445ef8bcc9b08b1bba18ba4f56f161c3`
 
 See [runtime monitoring](runtime-watch.md) for event schemas, normalization, predicate semantics, resource limits and termination. Every rule is mandatory in boot, application and interrupt phases and in run, step, replay and fast modes. These are conservative emulator restrictions, not verified board limits. Array order selects the first violation when multiple rules match one observation.
 

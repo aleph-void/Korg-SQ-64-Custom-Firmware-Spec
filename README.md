@@ -1,6 +1,6 @@
 # Independent SQ-64 firmware specification
 
-Version **0.5.0** defines 80 requirements, 340 named execution/review cases, seven executable image checks, a machine-readable emulator interface, independent update and backup validators, evidence reporting, and five executable continuous runtime watch rules. The code, documentation and fixtures are original; no Korg firmware or decompiled functions are distributed.
+Version **0.6.0** defines 87 requirements, 382 named execution/review cases, seven executable image checks, a machine-readable emulator interface, independent update and backup validators, evidence reporting, and five executable continuous runtime watch rules. The code, documentation and fixtures are original; no Korg firmware or decompiled functions are distributed.
 
 The software contract and validation tooling are usable now. **Physical hardware conformance remains incomplete:** exact board parts/wiring, protected storage ownership, electrical limits and worst-case timing still require independent measurements. A passing software report does not guarantee that arbitrary firmware will work on a physical SQ-64.
 
@@ -27,10 +27,10 @@ Install with `python -m pip install .` to use `sq64-conformance` from any direct
 | Profile | Requirements | Meaning of a passing report |
 | --- | ---: | --- |
 | `image` | 7 | Full-system package geometry, identity, version, checksums and reset vectors |
-| `software` | 60 | All applicable named cases have qualifying candidate evidence against the bounded software interface |
-| `application-only` | 66 | Software evidence plus a pinned baseline, recovery policy, complete write captures and recovery/interruption cases; missing evidence is rejection |
-| `hardware` (default) | 70 | Requires device measurements and a completed board contract; release-gated in this revision |
-| `korg-compatible` | 74 | Hardware contract plus strict declared compatibility; release-gated in this revision |
+| `software` | 67 | All applicable named cases have qualifying candidate evidence against the bounded software interface |
+| `application-only` | 73 | Software evidence plus a pinned baseline, recovery policy, complete write captures and recovery/interruption cases; missing evidence is rejection |
+| `hardware` (default) | 77 | Requires device measurements and a completed board contract; release-gated in this revision |
+| `korg-compatible` | 81 | Hardware contract plus strict declared compatibility; release-gated in this revision |
 
 Exit codes are `0` pass within the selected scope, `1` failure/malformed input and `2` incomplete coverage. Command-line usage errors also use argparse's exit code `2` and produce no conformance report. Standalone archive checks have their own artifact report and never imply candidate execution. Template/catalog exports exit `0` without running conformance checks. Offline watch replay has separate exits: `0` active after the supplied observations, `1` detected violation, `3` monitoring/tooling error. An active replay report is not a safety certificate.
 

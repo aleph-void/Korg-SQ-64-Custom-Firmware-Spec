@@ -20,7 +20,7 @@ class RecoveryTests(unittest.TestCase):
         self.folder=tempfile.TemporaryDirectory(); self.addCleanup(self.folder.cleanup)
         Path(self.folder.name,'installer').write_bytes(b'installer'); Path(self.folder.name,'observer').write_bytes(b'observer'); Path(self.folder.name,'capture.json').write_bytes(b'{}')
         self.baseline=image(); self.candidate=image()
-        self.policy=dict(format='sq64-recovery-policy',version=1,specVersion='0.5.0',baselineSha256=sha(self.baseline),reviewRevision='synthetic-review',
+        self.policy=dict(format='sq64-recovery-policy',version=1,specVersion='0.6.0',baselineSha256=sha(self.baseline),reviewRevision='synthetic-review',
             installer=dict(artifact='installer',artifactSha256=sha(b'installer')),observer=dict(artifact='observer',artifactSha256=sha(b'observer')),
             protected=[region(0,0x8000,kind='recovery'),region(0x80000,0x1000,kind='calibration')],
             writes=dict(installation=[region(0x10000,0x20000)],runtime=[region(0x40000,0x40000)]),spiGeometry=dict(pageSize=256,eraseSizes=[4096,65536]))
@@ -32,7 +32,7 @@ class RecoveryTests(unittest.TestCase):
         identity=dict(imageSha256=sha(self.candidate),baselineSha256=sha(self.baseline),policySha256=sha(policy),installerSha256=sha(b'installer'),observerSha256=sha(b'observer'))
         self.trace.update(identity); trace=raw(self.trace)
         self.doc.update(imageSha256=sha(self.candidate),recovery=dict(identity,traceSha256=sha(trace)))
-        return dict(baseline=self.baseline,policy_data=policy,approved_policy_sha256=sha(policy),trace_data=trace,evidence=self.doc,contexts=self.doc['contexts'],artifact_root=self.folder.name,spec_version='0.5.0',model_hash=model_contract_digest())
+        return dict(baseline=self.baseline,policy_data=policy,approved_policy_sha256=sha(policy),trace_data=trace,evidence=self.doc,contexts=self.doc['contexts'],artifact_root=self.folder.name,spec_version='0.6.0',model_hash=model_contract_digest())
     def check(self, **override):
         options=self.inputs(); options.update(override); return evaluate_recovery(self.candidate,**options)
     def event(self, operation='program',phase=1,**data):
