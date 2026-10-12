@@ -1,6 +1,6 @@
 # Peripheral register interface for firmware authors
 
-Specification version 0.4.0 supplement. [Contracts](contracts.md) describe the
+Specification version 0.5.0 supplement. [Contracts](contracts.md) describe the
 package, wire and panel formats; this page records the **register-level
 software interface** a custom firmware needs in order to drive the board
 model: the addresses, bit assignments and sequencing that supplied-image

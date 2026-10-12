@@ -1,6 +1,6 @@
 # Firmware interface contracts
 
-Specification version 0.4.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board. The register addresses, DMA stream assignments and programming sequences behind these contracts are collected in the [peripheral register interface](peripheral-registers.md).
+Specification version 0.5.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board. The register addresses, DMA stream assignments and programming sequences behind these contracts are collected in the [peripheral register interface](peripheral-registers.md).
 
 ## Full-system VSB
 
@@ -37,6 +37,8 @@ Checksums are corruption checks, not signatures or evidence of functional correc
 | 0x14000..0x34000 | external SPI flash 0x10000..0x30000 |
 
 Ranges are end-exclusive. The emulator maps the internal flash alias at 0x08000000 and SRAM at 0x20000000..0x20040000, and the browser model provides 16 MiB of SPI NOR storage. Saved project slot n occupies a 0x3d000-byte region starting at 0xc0000 + n×0x3d000; slot 63 ends at 0x1000000 (end-exclusive). A 1 MiB model cannot represent all 64 slots. These are executable interoperability bounds, not a verified schematic. The complete reserved/calibration storage ownership map, MCU part, board pin map, clocks and electrical output topology remain unresolved release blockers. Custom firmware must supply initialization and copying routines itself; the emulator does not silently load the application into RAM.
+
+Firmware must support the full project lifecycle: creating a new project in the current workspace, loading any of the 64 saved slots into the workspace, saving the workspace to a selected slot, and deleting a saved slot (PROJECT-001..004). Save and delete are explicit operations against exactly one slot region above; nothing may mutate another slot, the workspace (on rejection), reserved storage or settings. A deleted or never-written slot is observably empty: a load attempt reports it instead of producing undefined data, and the backup transport returns the empty-slot status (30) with explicit null archive records rather than invented contents. Durable commitment follows the shutdown contract below; completion may only be reported once the data would survive a normal shutdown and cold restart. Interrupted saves and deletes must leave the previous contents or a valid new/empty state (STORE-004, PROJECT-004).
 
 The engine enforces eight-byte reset-stack alignment and faults misaligned multiword/FP transfers. Scalar unaligned support follows the modeled Cortex-M configuration. Exception nesting must preserve MSP/PSP, integer registers, status/IT state, alignment padding and floating-point context. See CPU-001..005 for directed cases.
 

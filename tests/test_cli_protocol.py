@@ -104,11 +104,11 @@ class CliTests(unittest.TestCase):
         result = self.cli(self.root / 'image.VSB', '--profile', 'software', '--evidence-template', '--output', path)
         self.assertEqual(result.returncode, 0, result.stderr)
         template = json.loads(path.read_text())
-        self.assertEqual(len(template['results']), 44)
+        self.assertEqual(len(template['results']), 53)
         self.assertTrue(all(r['status'] == 'not-run' for r in template['results']))
         result = self.cli(self.root / 'image.VSB', '--profile', 'software', '--evidence', path)
         self.assertEqual(result.returncode, 2, result.stderr)
-        self.assertEqual(json.loads(result.stdout)['counts']['not-run'], 44)
+        self.assertEqual(json.loads(result.stdout)['counts']['not-run'], 53)
 
     def test_standalone_backup_and_readback(self):
         result = self.cli('--backup', self.root / 'backup.json', '--readback', self.root / 'backup.json')
@@ -128,7 +128,7 @@ class CliTests(unittest.TestCase):
         self.assertNotIn('Traceback', result.stderr)
 
     def test_catalog_and_board_contract(self):
-        self.assertEqual(len(json.loads(self.cli('--catalog').stdout)['requirements']), 71)
+        self.assertEqual(len(json.loads(self.cli('--catalog').stdout)['requirements']), 80)
         board = json.loads(self.cli('--board-contract').stdout)
         buttons = board['panel']['buttons']
         self.assertEqual(len(buttons), 85)

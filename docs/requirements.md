@@ -1,6 +1,6 @@
 # SQ-64 requirements catalog
 
-Version 0.4.0. Generated from `sq64_spec/requirements.json`.
+Version 0.5.0. Generated from `sq64_spec/requirements.json`.
 
 SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.
 
@@ -547,6 +547,114 @@ Hardware and compatibility profiles require candidate hardware observations for 
 **Required cases:** `unchanged-settings`, `repeated-edits`, `erase-program-counts`, `endurance-policy`
 
 **Quantitative bounds:** A candidate limit and matching measurements, including uncertainty, are required. Every declared metric must be present.
+
+## PROJECT-001 — Create project
+
+**Requirement:** Firmware or its delivery tooling SHALL provide a documented operation that creates a new project with the declared default state in the current workspace without modifying any saved project slot.
+
+**Verification:** Create new projects over empty and fully populated catalogs; compare the exported workspace against declared defaults and digest-compare all 64 saved slots before and after.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `documented-operation`, `declared-defaults`, `empty-catalog`, `populated-catalog`, `saved-slot-guards`
+
+## PROJECT-002 — Load project
+
+**Requirement:** Firmware or its delivery tooling SHALL load any saved project slot into the current workspace exactly as committed, and report an empty or invalid slot without changing the workspace.
+
+**Verification:** Load every populated slot holding distinct synthetic data and compare exported workspace bytes; attempt empty and corrupted slots, requiring an explicit report and an unchanged workspace.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `every-populated-slot`, `exact-reproduction`, `empty-slot-report`, `invalid-slot-report`, `workspace-unchanged-on-rejection`
+
+## PROJECT-003 — Save project
+
+**Requirement:** Firmware or its delivery tooling SHALL save the current workspace to any selected project slot only through an explicit documented operation, modify only that slot, and report completion only after the data is committed.
+
+**Verification:** Save distinct data to first, middle and last slots and over an existing project; digest-compare untouched slots and read back after normal shutdown and cold restart.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `first-middle-last-slots`, `overwrite-existing`, `explicit-operation-only`, `completion-report`, `untouched-slot-guards`, `shutdown-cold-readback`
+
+## PROJECT-004 — Delete project
+
+**Requirement:** Firmware or its delivery tooling SHALL delete any saved project slot only through an explicit documented operation, leave the slot observably empty, and preserve every other slot, the current workspace and settings.
+
+**Verification:** Delete populated first, middle and last slots and verify emptiness by load attempt and export after restart; repeat deletion of an empty slot; interrupt delete phases in software, requiring the previous project or a valid empty slot; digest-compare remaining slots, workspace and settings.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `first-middle-last-slots`, `explicit-operation-only`, `observably-empty`, `empty-after-restart`, `repeated-delete`, `interrupted-delete`, `other-slot-workspace-settings-guards`
+
+## GLOBAL-001 — Global settings mode
+
+**Requirement:** Firmware or its delivery tooling SHALL enter a documented global settings mode from the GLOBAL key during normal operation and leave it, with browsing alone changing no workspace, saved-slot or committed-settings data.
+
+**Verification:** Enter and exit global mode while stopped and while sequencing, browse every settings page without committing, and digest-compare the exported workspace, all 64 saved slots and the global record.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `global-key-entry`, `documented-exit`, `browse-without-commit`, `entry-while-sequencing`, `workspace-slot-settings-guards`
+
+## GLOBAL-002 — Edit global settings
+
+**Requirement:** Firmware or its delivery tooling SHALL allow editing every supported global setting, apply committed edits to device behavior and the exported global record, and preserve them over normal shutdown and cold restart without changing project, control or scale data.
+
+**Verification:** Edit each documented global field at its boundary values, compare the exported global record, observe a behavioral effect for each functional field, read back after normal shutdown and cold restart, and digest-compare projects, controls and scales.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `each-documented-field`, `boundary-values`, `export-match`, `behavioral-effect`, `shutdown-cold-readback`, `non-global-guards`
+
+## PATTERN-001 — Pattern selection
+
+**Requirement:** Firmware or its delivery tooling SHALL select any of the 16 patterns of each of the four tracks as the track's active pattern through a documented operation from the PATTERN key, and make the active selection observable.
+
+**Verification:** Select every pattern slot on every track holding distinct synthetic data; confirm the reported selection and that sequencing and export follow the selected pattern.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `pattern-key-entry`, `every-track`, `all-16-slots`, `selection-report`, `selected-pattern-effective`
+
+## PATTERN-002 — Pattern integrity
+
+**Requirement:** Firmware or its delivery tooling SHALL preserve every non-selected pattern across selection changes and edits, and keep each project's pattern presence map consistent with its stored patterns.
+
+**Verification:** Fill all 64 patterns with distinct synthetic data, switch and edit repeatedly, digest-compare non-selected patterns, and compare presence bytes against stored pattern data after save and normal restart.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `non-selected-preserved`, `repeated-switching`, `edit-isolation`, `presence-map-consistency`, `save-restart-consistency`
+
+## SHIFT-001 — Shift-modified functions
+
+**Requirement:** Firmware or its delivery tooling SHALL treat SHIFT as a modifier only: declare every supported SHIFT-modified function or mode, perform each declared function only while SHIFT is held with its companion control, and cause no state change from SHIFT alone or from undeclared combinations.
+
+**Verification:** Exercise every declared SHIFT combination with press/release ordering variants, then SHIFT alone and undeclared combinations with explicit no-effect expectations; digest-compare the workspace, saved slots and settings afterward. A candidate declaring no SHIFT functions still requires the no-effect cases.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `declared-combinations`, `press-release-ordering`, `shift-alone-no-effect`, `undeclared-combination-guards`, `state-guards`
 
 ## VUP-001 — Discovery
 

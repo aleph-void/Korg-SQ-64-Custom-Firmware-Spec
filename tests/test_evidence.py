@@ -193,6 +193,6 @@ class EvidenceTests(unittest.TestCase):
                 row['measurements'] = [{'metric': 'fixture', 'unit': 'count', 'value': 1, 'uncertainty': 0}]
             document['results'].append(row)
         report = self.run_evidence(document, candidate=candidate)
-        self.assertEqual(report['counts'], {'pass': 61, 'fail': 0, 'not-run': 0})
+        self.assertEqual(report['counts'], {'pass': 70, 'fail': 0, 'not-run': 0})
         self.assertEqual(report['status'], 'incomplete')
         self.assertFalse(report['hardwareValidated'])

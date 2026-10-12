@@ -1,6 +1,6 @@
 {
   "format": "sq64-requirements",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "profiles": {
     "image": "Bounded full-system VSB structural checks",
     "hardware": "Device contract, including physical evidence and declared feature behavior",
@@ -1007,6 +1007,226 @@
         "repeated-edits",
         "erase-program-counts",
         "endurance-policy"
+      ]
+    },
+    {
+      "id": "PROJECT-001",
+      "title": "Create project",
+      "shall": "Provide a documented operation that creates a new project with the declared default state in the current workspace without modifying any saved project slot.",
+      "verification": "Create new projects over empty and fully populated catalogs; compare the exported workspace against declared defaults and digest-compare all 64 saved slots before and after.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "documented-operation",
+        "declared-defaults",
+        "empty-catalog",
+        "populated-catalog",
+        "saved-slot-guards"
+      ]
+    },
+    {
+      "id": "PROJECT-002",
+      "title": "Load project",
+      "shall": "Load any saved project slot into the current workspace exactly as committed, and report an empty or invalid slot without changing the workspace.",
+      "verification": "Load every populated slot holding distinct synthetic data and compare exported workspace bytes; attempt empty and corrupted slots, requiring an explicit report and an unchanged workspace.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "every-populated-slot",
+        "exact-reproduction",
+        "empty-slot-report",
+        "invalid-slot-report",
+        "workspace-unchanged-on-rejection"
+      ]
+    },
+    {
+      "id": "PROJECT-003",
+      "title": "Save project",
+      "shall": "Save the current workspace to any selected project slot only through an explicit documented operation, modify only that slot, and report completion only after the data is committed.",
+      "verification": "Save distinct data to first, middle and last slots and over an existing project; digest-compare untouched slots and read back after normal shutdown and cold restart.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "first-middle-last-slots",
+        "overwrite-existing",
+        "explicit-operation-only",
+        "completion-report",
+        "untouched-slot-guards",
+        "shutdown-cold-readback"
+      ]
+    },
+    {
+      "id": "PROJECT-004",
+      "title": "Delete project",
+      "shall": "Delete any saved project slot only through an explicit documented operation, leave the slot observably empty, and preserve every other slot, the current workspace and settings.",
+      "verification": "Delete populated first, middle and last slots and verify emptiness by load attempt and export after restart; repeat deletion of an empty slot; interrupt delete phases in software, requiring the previous project or a valid empty slot; digest-compare remaining slots, workspace and settings.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "first-middle-last-slots",
+        "explicit-operation-only",
+        "observably-empty",
+        "empty-after-restart",
+        "repeated-delete",
+        "interrupted-delete",
+        "other-slot-workspace-settings-guards"
+      ]
+    },
+    {
+      "id": "GLOBAL-001",
+      "title": "Global settings mode",
+      "shall": "Enter a documented global settings mode from the GLOBAL key during normal operation and leave it, with browsing alone changing no workspace, saved-slot or committed-settings data.",
+      "verification": "Enter and exit global mode while stopped and while sequencing, browse every settings page without committing, and digest-compare the exported workspace, all 64 saved slots and the global record.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "global-key-entry",
+        "documented-exit",
+        "browse-without-commit",
+        "entry-while-sequencing",
+        "workspace-slot-settings-guards"
+      ]
+    },
+    {
+      "id": "GLOBAL-002",
+      "title": "Edit global settings",
+      "shall": "Allow editing every supported global setting, apply committed edits to device behavior and the exported global record, and preserve them over normal shutdown and cold restart without changing project, control or scale data.",
+      "verification": "Edit each documented global field at its boundary values, compare the exported global record, observe a behavioral effect for each functional field, read back after normal shutdown and cold restart, and digest-compare projects, controls and scales.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "each-documented-field",
+        "boundary-values",
+        "export-match",
+        "behavioral-effect",
+        "shutdown-cold-readback",
+        "non-global-guards"
+      ]
+    },
+    {
+      "id": "PATTERN-001",
+      "title": "Pattern selection",
+      "shall": "Select any of the 16 patterns of each of the four tracks as the track's active pattern through a documented operation from the PATTERN key, and make the active selection observable.",
+      "verification": "Select every pattern slot on every track holding distinct synthetic data; confirm the reported selection and that sequencing and export follow the selected pattern.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "pattern-key-entry",
+        "every-track",
+        "all-16-slots",
+        "selection-report",
+        "selected-pattern-effective"
+      ]
+    },
+    {
+      "id": "PATTERN-002",
+      "title": "Pattern integrity",
+      "shall": "Preserve every non-selected pattern across selection changes and edits, and keep each project's pattern presence map consistent with its stored patterns.",
+      "verification": "Fill all 64 patterns with distinct synthetic data, switch and edit repeatedly, digest-compare non-selected patterns, and compare presence bytes against stored pattern data after save and normal restart.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "non-selected-preserved",
+        "repeated-switching",
+        "edit-isolation",
+        "presence-map-consistency",
+        "save-restart-consistency"
+      ]
+    },
+    {
+      "id": "SHIFT-001",
+      "title": "Shift-modified functions",
+      "shall": "Treat SHIFT as a modifier only: declare every supported SHIFT-modified function or mode, perform each declared function only while SHIFT is held with its companion control, and cause no state change from SHIFT alone or from undeclared combinations.",
+      "verification": "Exercise every declared SHIFT combination with press/release ordering variants, then SHIFT alone and undeclared combinations with explicit no-effect expectations; digest-compare the workspace, saved slots and settings afterward. A candidate declaring no SHIFT functions still requires the no-effect cases.",
+      "profiles": [
+        "hardware",
+        "software",
+        "korg-compatible",
+        "application-only"
+      ],
+      "source": "board-contract",
+      "evidenceKinds": [
+        "hardware"
+      ],
+      "quantitative": false,
+      "cases": [
+        "declared-combinations",
+        "press-release-ordering",
+        "shift-alone-no-effect",
+        "undeclared-combination-guards",
+        "state-guards"
       ]
     },
     {
