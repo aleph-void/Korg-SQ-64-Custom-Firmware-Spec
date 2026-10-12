@@ -2,8 +2,8 @@
   "format": "sq64-watch-rules",
   "version": 1,
   "vocabularyVersion": 1,
-  "specVersion": "0.7.0",
-  "modelContractSha256": "3b03cbe428bda20cde40f4f9cb8d2e24f90d792faee9bbe32b84c7d706de4e6e",
+  "specVersion": "0.8.0",
+  "modelContractSha256": "17aa8eed1f674bf0ea0ba0d4b6216290e71954ce9b3fab8771ebdaa838aedbbc",
   "addressSpaces": {
     "cpu": 4294967296,
     "spi-flash": 16777216

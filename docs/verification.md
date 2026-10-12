@@ -50,7 +50,7 @@ The generated cases start as not-run and require no execution contexts until a p
 {
   "format": "sq64-evidence",
   "version": 2,
-  "specVersion": "0.7.0",
+  "specVersion": "0.8.0",
   "imageSha256": "<SHA-256 of exact VSB>",
   "contexts": {
     "documentation-review": {

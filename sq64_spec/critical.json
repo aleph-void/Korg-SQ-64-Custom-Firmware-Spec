@@ -1,14 +1,14 @@
 {
   "format": "sq64-critical-checks",
   "version": 1,
-  "specVersion": "0.7.0",
+  "specVersion": "0.8.0",
   "terminateOnCritical": true,
   "warning": "Your custom firmware probably will brick your device. Do not flash it.",
   "claim": "A hazard detection pass is unsafe. No detected hazard is not proof that firmware is safe to flash.",
   "watchRules": {
     "path": "watch-rules.json",
     "version": 1,
-    "sha256": "23b0a9164db1b8ae7c91827ed827e5a4e3ce3f40348193bd3a35e982140b6133",
+    "sha256": "e344f36677b786a8e4e916cb9d1585fe3d33e56598ca454cc3cdd77e9b74c287",
     "digestAlgorithm": "sha256-canonical-sq64-json-v1"
   },
   "checks": [

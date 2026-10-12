@@ -1,6 +1,6 @@
 # SQ-64 requirements catalog
 
-Version 0.7.0. Generated from `sq64_spec/requirements.json`.
+Version 0.8.0. Generated from `sq64_spec/requirements.json`.
 
 SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.
 
@@ -90,15 +90,15 @@ Hardware and compatibility profiles require candidate hardware observations for 
 
 ## BOOT-004 — Startup modes
 
-**Requirement:** Firmware or its delivery tooling SHALL interpret GLOBAL held at power-on as version mode and GLOBAL+PATTERN as update mode.
+**Requirement:** Firmware or its delivery tooling SHALL interpret GLOBAL held at power-on as version mode and GLOBAL+PATTERN as update mode; while version mode is active, light the PLAY indicator and continue the normal boot sequence when PLAY is pressed.
 
-**Verification:** Boot using held panel signals, then release; verify version and updater discovery on candidate execution.
+**Verification:** Boot using held panel signals, then release; verify version and updater discovery on candidate execution. In version mode, verify the PLAY indicator is lit, then press PLAY and verify boot continues to the declared ready state.
 
 **Profiles:** hardware, software, korg-compatible, application-only
 
 **Evidence kinds:** hardware; emulator also accepted in software
 
-**Required cases:** `normal`, `global-version`, `global-pattern-update`, `release-chord`
+**Required cases:** `normal`, `global-version`, `global-pattern-update`, `release-chord`, `version-play-indicator`, `version-play-continue`
 
 ## BOOT-005 — Reboot persistence
 

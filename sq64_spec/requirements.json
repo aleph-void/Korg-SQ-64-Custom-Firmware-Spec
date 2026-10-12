@@ -1,6 +1,6 @@
 {
   "format": "sq64-requirements",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "profiles": {
     "image": "Bounded full-system VSB structural checks",
     "hardware": "Device contract, including physical evidence and declared feature behavior",
@@ -168,8 +168,8 @@
     {
       "id": "BOOT-004",
       "title": "Startup modes",
-      "shall": "Interpret GLOBAL held at power-on as version mode and GLOBAL+PATTERN as update mode.",
-      "verification": "Boot using held panel signals, then release; verify version and updater discovery on candidate execution.",
+      "shall": "Interpret GLOBAL held at power-on as version mode and GLOBAL+PATTERN as update mode; while version mode is active, light the PLAY indicator and continue the normal boot sequence when PLAY is pressed.",
+      "verification": "Boot using held panel signals, then release; verify version and updater discovery on candidate execution. In version mode, verify the PLAY indicator is lit, then press PLAY and verify boot continues to the declared ready state.",
       "profiles": [
         "hardware",
         "software",
@@ -185,7 +185,9 @@
         "normal",
         "global-version",
         "global-pattern-update",
-        "release-chord"
+        "release-chord",
+        "version-play-indicator",
+        "version-play-continue"
       ]
     },
     {
