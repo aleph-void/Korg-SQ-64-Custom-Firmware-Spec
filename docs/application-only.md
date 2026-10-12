@@ -1,6 +1,6 @@
 # Application-only recovery restrictions
 
-Specification 0.6.0 retains the opt-in `application-only` acceptance gate. It includes the 67 software requirements and RECOVERY-001 through RECOVERY-006. Missing policy, missing evidence, unverified artifacts, incomplete captures, or a failed requirement reject acceptance with exit code 1. Existing profiles retain their scope.
+Specification 0.7.0 retains the opt-in `application-only` acceptance gate. It includes the 68 software requirements and RECOVERY-001 through RECOVERY-006. Missing policy, missing evidence, unverified artifacts, incomplete captures, or a failed requirement reject acceptance with exit code 1. Existing profiles retain their scope.
 
 The first 64 KiB of internal flash is immutable against a reviewed, known-recoverable baseline. The reviewer must identify and preserve every additional recovery code/data dependency. Neither installation nor runtime may attempt to erase or program protected ranges, even if the resulting bytes would be identical. Option unlocking/programming, OTP writes, protection/RDP changes, boot/debug configuration changes, persistent status/security writes, chip/mass erases and unknown persistent operations are forbidden. Reviewed write allowlists differ between installation and runtime. Reserved, calibration and unknown ownership remain protected by omission from those allowlists.
 
@@ -18,7 +18,7 @@ python -m sq64_spec candidate.VSB --profile application-only \
 
 The policy hash is an explicit reviewer-selected trust anchor, not an approval inferred from the candidate. Bind it to the exact raw JSON bytes. Evidence uses the existing v2 schema and exact specification/model revision. Recovery inputs supplied to another profile are rejected rather than ignored. Policy and trace paths are CLI inputs; installer, observer and evidence artifact paths must stay within `--artifact-root` and their bytes must match their hashes.
 
-A policy has `format: "sq64-recovery-policy"`, integer `version: 1`, `specVersion: "0.6.0"`, `baselineSha256`, a nonempty `reviewRevision`, and `installer` and `observer` objects, each containing `artifact` and `artifactSha256`. It also requires:
+A policy has `format: "sq64-recovery-policy"`, integer `version: 1`, `specVersion: "0.7.0"`, `baselineSha256`, a nonempty `reviewRevision`, and `installer` and `observer` objects, each containing `artifact` and `artifactSha256`. It also requires:
 
 - `protected`: additional nonoverlapping ranges with `space`, `start`, `length`, `purpose` and `kind` (`recovery`, `reserved` or `calibration`). The mandatory internal 64 KiB cannot be redefined. Recovery dependencies must be fully available in the baseline package.
 - `writes`: exactly `installation` and `runtime` lists of nonoverlapping ranges with the same range fields except `kind`. They cannot overlap protected storage.

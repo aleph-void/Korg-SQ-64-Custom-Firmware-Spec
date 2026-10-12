@@ -4,7 +4,7 @@
 
 Every applicable requirement is `pass`, `fail` or `not-run`. Any failure makes the selected profile fail; otherwise missing coverage or a release blocker makes it incomplete. Static image checks are executed locally. Runtime and review observations remain externally supplied evidence, visibly labeled as such. Supplemental update/archive checks validate only their stated scope and never silently fill a firmware requirement.
 
-`image` contains seven static checks. `software` contains those checks plus 60 execution/review requirements and can accept emulator evidence. It excludes physical power sources, USB enumeration, DIN electrical framing, real clock accuracy/deadlines, electrical outputs/calibration/pin assignments and protected storage ownership. `hardware` has 77 requirements and only credits physical candidate execution for runtime checks. `korg-compatible` adds four compatibility requirements. Every physical profile remains release-gated on independently completing the board contract.
+`image` contains seven static checks. `software` contains those checks plus 61 execution/review requirements and can accept emulator evidence. It excludes physical power sources, USB enumeration, DIN electrical framing, real clock accuracy/deadlines, electrical outputs/calibration/pin assignments and protected storage ownership. `hardware` has 78 requirements and only credits physical candidate execution for runtime checks. `korg-compatible` adds four compatibility requirements. Every physical profile remains release-gated on independently completing the board contract.
 
 The [catalog](requirements.md) enumerates every required case. A single case may summarize a complete parameter matrix (for example `all-85-press-release`), but its artifact must contain the individual inputs, expectations and outcomes. Extra case names are allowed; missing required names remain not-run. Unsupported optional behavior must have an explicit rejection/absence expectation in the candidate declaration and a measured case; omitting the case is not a pass. The validator checks accounting and integrity, not whether a claimed observation is true or a chosen test adequately exercises the firmware.
 
@@ -50,7 +50,7 @@ The generated cases start as not-run and require no execution contexts until a p
 {
   "format": "sq64-evidence",
   "version": 2,
-  "specVersion": "0.6.0",
+  "specVersion": "0.7.0",
   "imageSha256": "<SHA-256 of exact VSB>",
   "contexts": {
     "documentation-review": {

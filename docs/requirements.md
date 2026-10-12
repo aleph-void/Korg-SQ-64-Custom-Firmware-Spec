@@ -1,6 +1,6 @@
 # SQ-64 requirements catalog
 
-Version 0.6.0. Generated from `sq64_spec/requirements.json`.
+Version 0.7.0. Generated from `sq64_spec/requirements.json`.
 
 SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.
 
@@ -745,6 +745,18 @@ Hardware and compatibility profiles require candidate hardware observations for 
 **Required cases:** `neutral-unswung`, `boundary-swing-values`, `affected-steps-offset`, `unaffected-steps-nominal`, `clamp-at-limits`, `measured-timing`, `settings-guards`
 
 **Quantitative bounds:** A candidate limit and matching measurements, including uncertainty, are required. Every declared metric must be present.
+
+## SPLASH-001 — Boot splash
+
+**Requirement:** Firmware or its delivery tooling SHALL treat a custom boot splash screen as optional declared behavior: render a startup splash only when the candidate declares one, keep its drawing within the display controller and DMA limits, still reach the declared ready state and honor the startup-mode chords while it is shown, and draw no splash when none is declared.
+
+**Verification:** Cold boot a declaring candidate and compare captured startup frame data against the declared splash, verify the declared ready state and GLOBAL and GLOBAL+PATTERN chords with the splash active; a candidate declaring no splash requires an explicit no-splash case.
+
+**Profiles:** hardware, software, korg-compatible, application-only
+
+**Evidence kinds:** hardware; emulator also accepted in software
+
+**Required cases:** `declared-splash-rendered`, `display-command-bounds`, `ready-state-reached`, `startup-chords-honored`, `no-splash-when-undeclared`
 
 ## VUP-001 — Discovery
 

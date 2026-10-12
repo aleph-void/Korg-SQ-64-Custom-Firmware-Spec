@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "sq64-spec"
-version = "0.6.0"
+version = "0.7.0"
 description = "Independent SQ-64 firmware contracts and conformance reporting"
 requires-python = ">=3.10"
 dependencies = []
