@@ -36,6 +36,16 @@ Exit codes are `0` pass within the selected scope, `1` failure/malformed input a
 
 Reports bind image results to the exact VSB SHA-256 and include hashes of successfully parsed input documents. A supplemental transcript or archive failure fails the overall report; a successful supplemental check does not replace a whole firmware requirement. A transfer checks every payload byte **and the begin-update version**, but does not prove programming completion. An archive comparison checks logical contents, but cannot itself establish that shutdown or restart occurred.
 
+## Developing custom firmware with Codex
+
+[AGENTS.md](AGENTS.md) provides Codex with project instructions for original firmware development, build setup, emulator testing, candidate evidence and recovery restrictions. It uses OpenAI's [repository instruction format](https://developers.openai.com/codex/guides/agents-md).
+
+Start a new Codex session in this checkout. For example:
+
+> Use AGENTS.md and this spec to create an original SQ-64 sequencer in a new firmware/ directory. Start with a minimal emulator-targeted firmware, a reproducible build, VSB packaging and image validation. Identify the available toolchain and emulator, then implement and test the first milestone. Keep unexecuted conformance cases marked not-run.
+
+Replace the example destination and feature request with your own. If this spec is a dependency inside a separate firmware repository, add an instruction to that repository's root `AGENTS.md` to read this file and the relevant contracts; Codex's startup discovery follows the path from the project root to its working directory, so a nested dependency's instructions are not automatically included when starting above it. Keep firmware build commands in the firmware project's own guidance.
+
 ## Contract and evidence
 
 - [Normative requirement catalog](docs/requirements.md): required cases, profiles, evidence kinds and quantitative obligations.
