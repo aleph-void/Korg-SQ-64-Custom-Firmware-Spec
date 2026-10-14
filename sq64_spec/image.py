@@ -2,7 +2,7 @@
 import hashlib
 import struct
 
-REGIONS = [(0, 0x10000), (0x10000, 0x4000), (0x14000, 0xbdd8), (0x20000, 0x14000)]
+REGIONS = [(0, 0x10000), (0x10000, 0x4000), (0x14000, 0xc000), (0x20000, 0x14000), (0x34000, 0x4000)]
 
 def inspect(data):
     results = []
@@ -20,5 +20,5 @@ def inspect(data):
     check('BOOT-001', 0x20000000 < sp <= 0x20040000 and sp % 8 == 0, 'Initial stack lies in SRAM and is eight-byte aligned')
     check('BOOT-002', bool(pc & 1) and 0x00200008 <= (pc & ~1) < 0x00210000, 'Reset vector points to Thumb code in internal flash')
     sums = [sum(struct.unpack_from('<' + 'H' * (length // 2), payload, start)) & 65535 for start, length in REGIONS]
-    check('PKG-005', not any(sums), 'Four additive halfword checksums: ' + ', '.join(hex(s) for s in sums))
+    check('PKG-005', not any(sums), 'Five additive halfword checksums: ' + ', '.join(hex(s) for s in sums))
     return digest, results

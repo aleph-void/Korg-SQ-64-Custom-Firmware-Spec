@@ -80,7 +80,7 @@ weaken the check to accept a candidate.
   into RAM for you. Validate reset-stack alignment, Thumb reset-vector range,
   and linker bounds with the actual linked image and `--profile image`.
 - A full-system VSB is exactly `0x38100` bytes, including its `0x100`-byte header.
-  Follow the four checksum regions and the noncontiguous payload-to-SPI mapping
+  Follow the five checksum regions and the noncontiguous payload-to-SPI mapping
   in `docs/contracts.md`. An arbitrary ELF or raw binary is not a VSB. Tests use
   synthetic, non-deployable images; do not treat those fixtures as firmware.
 - Use bounded work in interrupt handlers and timing-critical paths, explicit

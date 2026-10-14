@@ -1,6 +1,6 @@
 # Firmware interface contracts
 
-Specification version 0.8.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board. The register addresses, DMA stream assignments and programming sequences behind these contracts are collected in the [peripheral register interface](peripheral-registers.md).
+Specification version 0.9.0. All integers are little-endian unless the wire encoding below says otherwise. These are interoperability facts, not a redistribution of vendor code. Unverified board facts are explicit gaps; a firmware author must not substitute guessed pin wiring or calibration limits. `sq64_spec/board.json` is the versioned machine-readable software interface; it does not certify a physical board. The register addresses, DMA stream assignments and programming sequences behind these contracts are collected in the [peripheral register interface](peripheral-registers.md).
 
 ## Full-system VSB
 
@@ -21,9 +21,12 @@ The total file length is exactly 0x38100 (229,632) bytes. For each payload-relat
 ```
 (0x00000, 0x10000)
 (0x10000, 0x04000)
-(0x14000, 0x0bdd8)
+(0x14000, 0x0c000)
 (0x20000, 0x14000)
+(0x34000, 0x04000)
 ```
+
+The five regions tile the 0x38000 payload exactly. The supplied image satisfies them with zero-filled unused tails; a zero tail also keeps every contained sub-range zero-sum, so builders should zero-fill (not 0xFF-fill) unused bytes inside these regions. The earlier partial third region `(0x14000, 0x0bdd8)` is subsumed by the full region under that convention.
 
 Checksums are corruption checks, not signatures or evidence of functional correctness. Bytes outside these checksum regions are not thereby authenticated. The reset stack is eight-byte aligned, greater than 0x20000000 and at most 0x20040000. The reset vector has its Thumb bit set and points within loaded internal flash after the two vector words.
 
@@ -37,6 +40,8 @@ Checksums are corruption checks, not signatures or evidence of functional correc
 | 0x14000..0x34000 | external SPI flash 0x10000..0x30000 |
 
 Ranges are end-exclusive. The emulator maps the internal flash alias at 0x08000000 and SRAM at 0x20000000..0x20040000, and the browser model provides 16 MiB of SPI NOR storage. Saved project slot n occupies a 0x3d000-byte region starting at 0xc0000 + n×0x3d000; slot 63 ends at 0x1000000 (end-exclusive). A 1 MiB model cannot represent all 64 slots. These are executable interoperability bounds, not a verified schematic. The complete reserved/calibration storage ownership map, MCU part, board pin map, clocks and electrical output topology remain unresolved release blockers. Custom firmware must supply initialization and copying routines itself; the emulator does not silently load the application into RAM.
+
+**Supplied-image runtime placement.** The supplied system payload is not one flat binary: at startup its SPI-resident blocks are copied to separate runtime destinations — payload 0x10000..0x14000 to ITCM at 0x00000000, 0x14000..0x20000 to DTCM at 0x20000000, 0x34000..0x38000 to SRAM at 0x2000c000, and 0x20000..0x34000 to SRAM at 0x20010000 — while internal flash executes from 0x00200000. Application-only firmware is not bound to this layout (it supplies its own copying), but any patch of the supplied image must be linked and analyzed against these per-block bases rather than one flat payload base.
 
 Firmware must support the full project lifecycle: creating a new project in the current workspace, loading any of the 64 saved slots into the workspace, saving the workspace to a selected slot, and deleting a saved slot (PROJECT-001..004). Save and delete are explicit operations against exactly one slot region above; nothing may mutate another slot, the workspace (on rejection), reserved storage or settings. A deleted or never-written slot is observably empty: a load attempt reports it instead of producing undefined data, and the backup transport returns the empty-slot status (30) with explicit null archive records rather than invented contents. Durable commitment follows the shutdown contract below; completion may only be reported once the data would survive a normal shutdown and cold restart. Interrupted saves and deletes must leave the previous contents or a valid new/empty state (STORE-004, PROJECT-004).
 

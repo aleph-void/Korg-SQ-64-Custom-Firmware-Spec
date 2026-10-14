@@ -1,6 +1,6 @@
 # Independent SQ-64 firmware specification
 
-Version **0.8.0** defines 88 requirements, 389 named execution/review cases, seven executable image checks, a machine-readable emulator interface, independent update and backup validators, evidence reporting, and five executable continuous runtime watch rules. The code, documentation and fixtures are original; no Korg firmware or decompiled functions are distributed.
+Version **0.9.0** defines 88 requirements, 389 named execution/review cases, seven executable image checks, a machine-readable emulator interface, independent update and backup validators, evidence reporting, and five executable continuous runtime watch rules. The code, documentation and fixtures are original; no Korg firmware or decompiled functions are distributed.
 
 The software contract and validation tooling are usable now. **Physical hardware conformance remains incomplete:** exact board parts/wiring, protected storage ownership, electrical limits and worst-case timing still require independent measurements. A passing software report does not guarantee that arbitrary firmware will work on a physical SQ-64.
 
