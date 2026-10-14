@@ -1,2 +1,2 @@
 """Public requirements and checks; no firmware implementation or vendor assets."""
-__version__ = '0.8.0'
+__version__ = '0.9.0'

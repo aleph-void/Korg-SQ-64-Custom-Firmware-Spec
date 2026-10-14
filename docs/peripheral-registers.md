@@ -1,6 +1,6 @@
 # Peripheral register interface for firmware authors
 
-Specification version 0.8.0 supplement. [Contracts](contracts.md) describe the
+Specification version 0.9.0 supplement. [Contracts](contracts.md) describe the
 package, wire and panel formats; this page records the **register-level
 software interface** a custom firmware needs in order to drive the board
 model: the addresses, bit assignments and sequencing that supplied-image
@@ -10,8 +10,13 @@ These are software interface facts exercised by the independent emulator's
 board model. They carry the same caveat as the rest of the board contract:
 **no physical register map, wiring or electrical behavior has been
 independently verified**, and the exact MCU part remains an open release
-blocker. Values are byte addresses; registers are 32-bit little-endian unless
-stated.
+blocker. Static evidence from the supplied image narrows the part: its block
+sizes tile a 16 KiB ITCM and a 64 KiB DTCM, the reset stack bound fixes SRAM
+at 256 KiB, and SAI1, dual USART and OTG-FS are all present — consistent only
+with the 256 KiB-SRAM STM32F7 group (F722/F723 or F745/F746/F750/F756 class).
+Reading DBGMCU_IDCODE at 0x5C000000 (DEV_ID/REV_ID) would close the blocker;
+that register is not currently part of the modeled interface. Values are byte
+addresses; registers are 32-bit little-endian unless stated.
 
 ## Clock and timing
 

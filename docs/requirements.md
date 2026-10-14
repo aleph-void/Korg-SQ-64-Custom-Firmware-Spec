@@ -1,6 +1,6 @@
 # SQ-64 requirements catalog
 
-Version 0.8.0. Generated from `sq64_spec/requirements.json`.
+Version 0.9.0. Generated from `sq64_spec/requirements.json`.
 
 SHALL is mandatory within the selected profile. Each named case must have an explicit expected result, observation and status. Missing cases are not-run. Extra cases may extend coverage; they cannot replace required cases.
 

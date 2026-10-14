@@ -45,7 +45,7 @@ validate evidence, and which runtime behaviors are hazardous.
 - SRAM: 256 KiB at `0x20000000`; reset stack 8-byte aligned, in `(0x20000000, 0x20040000]`.
 - Reset vector: Thumb bit set, pointing within loaded flash after the two vector words.
 - VSB container: exactly `0x38100` bytes — `KORG SYSTEM FILE` header, `SQ-64`/`SYSTEM`
-  identity, version bounds, four zero-sum halfword checksum regions over the `0x38000`
+  identity, version bounds, five zero-sum halfword checksum regions over the `0x38000`
   payload. `--profile image` checks all of this; build it to pass, don't hand-roll checks.
 
 ## Critical hazards (firmware must never do these outside a host-granted installation context)

@@ -1,12 +1,12 @@
 {
   "format": "sq64-watch-fixtures",
   "version": 1,
-  "rulesetSha256": "e344f36677b786a8e4e916cb9d1585fe3d33e56598ca454cc3cdd77e9b74c287",
+  "rulesetSha256": "db77e1fa1c6efee6bcc387a06cf98527bf2db525b37a6e47d5a88c31227ededa",
   "identity": {
     "imageSha256": "0000000000000000000000000000000000000000000000000000000000000000",
-    "specVersion": "0.8.0",
-    "rulesetSha256": "e344f36677b786a8e4e916cb9d1585fe3d33e56598ca454cc3cdd77e9b74c287",
-    "modelContractSha256": "17aa8eed1f674bf0ea0ba0d4b6216290e71954ce9b3fab8771ebdaa838aedbbc",
+    "specVersion": "0.9.0",
+    "rulesetSha256": "db77e1fa1c6efee6bcc387a06cf98527bf2db525b37a6e47d5a88c31227ededa",
+    "modelContractSha256": "076539cdb7e31b986a073e69faf01170bff91049b2bcb47ba24e7d651a4d06db",
     "emulator": {
       "name": "synthetic-fixture",
       "version": "1",

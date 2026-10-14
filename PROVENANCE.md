@@ -15,3 +15,5 @@ Primary references:
 Original source, documentation and tests in this project use the MIT license. Korg and SQ-64 identify the compatibility target; this project is independent and not endorsed by Korg.
 
 The 0.4.0 watch vocabulary, interpreter, generated reference and shared synthetic fixtures are original specification tooling. Its five initial policies retain the ranges, command allowlist and conservative DMA interpretation of the sibling emulator's existing critical monitors. These are emulator restrictions, not new hardware measurements. The eight-byte masked-write correction and deterministic simultaneous-match precedence are explicitly documented and tested. Fixture identities are synthetic and cannot be submitted as candidate or physical-device evidence.
+
+The 0.9.0 payload-checksum region set, the supplied-image runtime block placement, and the MCU-part narrowing evidence derive from static analysis of the distributed Korg updater payload. Only interface facts were taken: region boundaries, runtime destination addresses and part-narrowing observations. No vendor code, symbols, decompiled functions or vendor bytes are incorporated into this repository.
